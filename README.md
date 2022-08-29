@@ -1,4 +1,4 @@
-# TT-TFD_GQME
+# TT-TFD+GQME
 This repository provides the code that carries out generalized quantum master equation (GQME) propagation, as well as the tensor-train thermo-field dynamics (TT-TFD) propagation to obtain the projection free input for the GQME routine. 
 
 # TT-TFD
