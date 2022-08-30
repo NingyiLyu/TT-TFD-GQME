@@ -24,4 +24,4 @@ The code in SI_TT-TFD.py generates the TT-TFD projection free inputs for spin-bo
  ```
 
 # Output
-The arrays "psu","psd","coh12" and "coh21" are the outputs for populations and coherences. For the current calculation (initialize electronic state at donor state, line 70:tt_psi=tt_su) should be directly used as U elements. For the ones that require linear combination, use the method described in SI, Section S.IV. 
+The arrays "psu","psd","coh12" and "coh21" are the outputs for populations and coherences. For the current calculation (initialize electronic state at donor state, line 65:tt_psi=tt_su) should be directly used as U elements. For the ones that require linear combination, use the method described in SI, Section S.IV. 
