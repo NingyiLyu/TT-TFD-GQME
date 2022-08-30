@@ -230,7 +230,7 @@ U = np.zeros((TIME_STEPS, DOF_E_SQ, DOF_E_SQ), dtype=np.complex_)
 initNum = 0 # number that is advanced in each loop for the init state
 for initName in INIT_NAMES:
     # pull in time steps
-    infileStrTime = "TT-TFD_Output/" + FILE_PREFIX + "model%s"%MODEL_NUM + "_" 
+    infileStrTime = "Output/TT-TFD_Output/" + FILE_PREFIX + "model%s"%MODEL_NUM + "_" 
     infileStrTime += initName + "/" + FILE_PREFIX + "model%s"%MODEL_NUM  + "_" 
     infileStrTime += initName + "_time.csv"
     time = np.loadtxt(infileStrTime, dtype=np.dtype('f8'))
