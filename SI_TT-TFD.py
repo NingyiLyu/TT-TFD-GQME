@@ -8,13 +8,8 @@ Created on Sun Oct 17 04:11:14 2021
 import numpy as np
 import tt
 import tt.ksl
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
-from time import process_time
-t_start=process_time()
+import os
 qmodes=60            #number of quantum bath modes
 nsc = 5100             # number of propagation steps
 tau = 10              # propagation time step
@@ -68,6 +63,7 @@ gs=np.zeros((occ))
 gs[0]=1.
 tt_gs=tt.tensor(gs)
 tt_psi0=tt_su
+tt_flag=tt_psi0
 for k in range(2*qmodes):#double space formation
     tt_psi0=tt.kron(tt_psi0,tt_gs)
 #constructing Pauli operators
@@ -197,13 +193,31 @@ for ii in range(nsc):
 #plt.ylabel('Populations')
 #plt.plot(t,psu-psd,label='Model 1, sigma_z')
 #plt.legend()                     
+np.save('t.npy',t)
+docs_dir=os.path.expanduser('Output/TT-TFD_Output/')
+if tt_flag==tt_su:    
+    np.save(os.path.join(docs_dir,'psu_initsu.npy'),psu)
+    np.save(os.path.join(docs_dir,'psd_initsu.npy'),psd)
+    np.save(os.path.join(docs_dir,'coh12_initsu.npy'),coh12)
+    np.save(os.path.join(docs_dir,'coh21_initsu.npy'),coh21)
+
+elif tt_flag==tt_sd:    
+    np.save(os.path.join(docs_dir,'psu_initsd.npy'),psu)
+    np.save(os.path.join(docs_dir,'psd_initsd.npy'),psd)
+    np.save(os.path.join(docs_dir,'coh12_initsd.npy'),coh12)
+    np.save(os.path.join(docs_dir,'coh21_initsd.npy'),coh21)   
+
+elif tt_flag==tt_e1:    
+    np.save(os.path.join(docs_dir,'psu_inite1.npy'),psu)
+    np.save(os.path.join(docs_dir,'psd_inite1.npy'),psd)
+    np.save(os.path.join(docs_dir,'coh12_inite1.npy'),coh12)
+    np.save(os.path.join(docs_dir,'coh21_inite1.npy'),coh21) 
     
-    
-np.savetxt('psu.npy',psu)
-np.savetxt('psd.npy',psd)
-np.savetxt('t.npy',t)
-np.savetxt('coh12.npy',coh12)    
-np.savetxt('coh21.npy',coh21)   
+elif tt_flag==tt_e2:    
+    np.save(os.path.join(docs_dir,'psu_inite2.npy'),psu)
+    np.save(os.path.join(docs_dir,'psd_inite2.npy'),psd)
+    np.save(os.path.join(docs_dir,'coh12_inite2.npy'),coh12)
+    np.save(os.path.join(docs_dir,'coh21_inite2.npy'),coh21)
     
     
     
