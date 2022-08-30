@@ -26,15 +26,13 @@ const string TYPE_COUPLING = "Non-Condon";
 // -------------------------------------
 // ----- Input/output folder names -----
 // -------------------------------------
-const string FILE_FOLDER = "../../";
-const string DYN_FOLDER = DYN_STRING + "_Output/";
-const string FDS_FOLDER = FILE_FOLDER + DYN_FOLDER + SYSTEM + "/";
-const string SIGMA_FOLDER = FDS_FOLDER + "Sigma_Output/";
-const string PFI_FOLDER = FDS_FOLDER + "ProjFree_Output/";
+const string OUTPUT_FOLDER = "../../../Output/";
+const string SIGMA_FOLDER = OUTPUT_FOLDER + "Sigma_Output/";
+const string PFI_FOLDER = OUTPUT_FOLDER + "ProjFree_Output/";
 
 const string GQME_TYPE_FOLDER = GQME_TYPE + "_GQME/";
-const string K_FOLDER = FDS_FOLDER + GQME_TYPE_FOLDER + "K_Output/";
-const string GQME_FOLDER = FDS_FOLDER + GQME_TYPE_FOLDER + "GQME_Output/";
+const string K_FOLDER = OUTPUT_FOLDER + GQME_TYPE_FOLDER + "K_Output/";
+const string GQME_FOLDER = OUTPUT_FOLDER + GQME_TYPE_FOLDER + "GQME_Output/";
 
 // -------------------------------------
 // ----- Variable type definitions -----
