@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import os
 qmodes=60            #number of quantum bath modes
 nsc = 5100             # number of propagation steps
-tau = 10              # propagation time step
+tau = 0.00150082999505279              # propagation time step
 eps = 1e-14            # tt approx error
 rma = 2000000                # max tt rank
 dim = qmodes         # number of coords
@@ -20,7 +20,7 @@ nstates=2              # number of surfaces
 occ=10                 #maximum occupation number; low for harmonic systems
 EYE=1j
 kondo=0.1            #kondo parameter
-au=3.00166*10**(-4)
+au=1.#3.00166*10**(-4)
 cmn1toau=4.5563353e-6 # Conversion of wavenumbers to atomic units
 au2ps=0.00002418884254# Conversion of attoseconds to atomic units
 wc=1.*au     #max freq for Ohmic bath discretization
@@ -138,13 +138,13 @@ tt_heavu=tt.kron(tt_su,tt.ones(occ,dim*2))
 tt_heavd=tt.kron(tt_sd,tt.ones(occ,dim*2))
 #Propagation time step and range
 t=np.arange(0,nsc*tau,tau)
-t=t*au2ps
+t=t#*au2ps
 #Add noise, for higher rank KSL propagation
 radd = 19
 #radd = np.array([1,9,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,9,1]) 
-radd=np.array([1,9])
-radd=np.append(radd,np.repeat(19,qmodes*2-3))
-radd=np.append(radd,np.array([9,1]))
+radd=np.array([1,2])
+radd=np.append(radd,np.repeat(2,qmodes*2-3))
+radd=np.append(radd,np.array([2,1]))
 #if ( radd > 0 ):
 tt_rand=tt.rand(occ,qmodes*2,radd)
 #tt_rand=tt_rand*10**(-140)
@@ -194,7 +194,7 @@ for ii in range(nsc):
 #plt.plot(t,psu-psd,label='Model 1, sigma_z')
 #plt.legend()                     
 np.save('t.npy',t)
-docs_dir=os.path.expanduser('Output/TT-TFD_Output/')
+docs_dir=os.path.expanduser('~/Output/TT-TFD_Output/')
 if tt_flag==tt_su:    
     np.save(os.path.join(docs_dir,'psu_initsu.npy'),psu)
     np.save(os.path.join(docs_dir,'psd_initsu.npy'),psd)
