@@ -17,7 +17,7 @@ const string DYN_STRING = "TT-TFD";
 const string SYSTEM = "Spin-Boson";
 const string GQME_TYPE = "SingleState";
 // options: Full, SingleState, SubsetStates, PopulationsOnly
-const vector <string> STATES = {"00"};
+const vector <string> STATES = {"11"};
 // The state(s) to be looking at for SingleState or SubsetStates. It isn't
 // necessary to set this for Full or PopulationsOnly
 const string INITIAL_STATE = "00";

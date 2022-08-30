@@ -10,8 +10,8 @@ mpl.style.use('classic')
 #################
 ### Constants ###
 #################
-TIME_STEPS = 10200 # number of time steps
-MODEL_NUM = 5 # model number
+TIME_STEPS = 10 # number of time steps
+MODEL_NUM = 1 # model number
 DOF_E = 2 # number of electronic states
 DOF_E_SQ = DOF_E * DOF_E
 
@@ -38,13 +38,6 @@ elif MODEL_NUM == 4:
     XI = 0.4
     OMEGA_C = 2
     OMEGA_MAX = 10
-elif MODEL_NUM == 5:
-    BETA = 3
-    GAMMA_DA = "0.333333"
-    EPSILON = 0
-    XI = 0.1
-    OMEGA_C = 1
-    OMEGA_MAX = 5
 elif MODEL_NUM == 6:
     EPSILON = 0
     XI = 0.2
@@ -65,7 +58,7 @@ print("      omega_max =", OMEGA_MAX)
 
 INIT_NAMES = ["initsu", "inite1", "inite2", "initsd"]
 INIT_NUMS = ["00", "01sx", "10sy", "11"]
-STATE_NAMES = ["psu", "coh12", "coh21", "psd"]
+STATE_NAMES = ["psu", "coh21", "coh12", "psd"]
 STATE_NUMS = ["00", "01", "10", "11"]
 FILE_PREFIX = "%s_steps_"%TIME_STEPS
 
@@ -76,10 +69,8 @@ U = np.zeros((TIME_STEPS, DOF_E_SQ, DOF_E_SQ), dtype=np.complex_)
 initNum = 0 # number that is advanced in each loop for the init state
 for initName in INIT_NAMES:
     # pull in time steps
-    infileStrTime = "Output/TT-TFD_Output/" + FILE_PREFIX + "model%s"%MODEL_NUM + "_" 
-    infileStrTime += initName + "/" + FILE_PREFIX + "model%s"%MODEL_NUM  + "_" 
-    infileStrTime += initName + "_time.csv"
-    time = np.loadtxt(infileStrTime, dtype=np.dtype('f8'))
+    infileStrTime = "Output/TT-TFD_Output/t.npy"
+    time = np.load(infileStrTime)
     
     stateNum = 0 # number that is advanced in each loop for the dynamic state
     for stateName in STATE_NAMES:
@@ -88,17 +79,15 @@ for initName in INIT_NAMES:
         imag = np.zeros((TIME_STEPS))
         
         # string to load in dynamics from TT-TFD
-        infileStr = "TT-TFD_Output/" + FILE_PREFIX + "model%s"%MODEL_NUM + "_" 
-        infileStr += initName + "/" + FILE_PREFIX + "model%s"%MODEL_NUM + "_" 
-        infileStr += initName + "_" + stateName + ".csv"
+        infileStr = "Output/TT-TFD_Output/" + stateName + "_" + initName + ".npy"
         
         # if dynamic state is a population, files only have real part
         if stateNum == 0 or stateNum == 3:
-            real = np.loadtxt(infileStr, dtype=np.dtype('f8'))
+            real = np.load(infileStr)
             
         # if dynamic state is a coherence, files have real and imag part
         else:
-            numbers = np.loadtxt(infileStr, dtype=np.complex_)
+            numbers = np.load(infileStr)
             
             for i in range(0,TIME_STEPS):
                 real[i] = np.real(numbers[i])
@@ -180,12 +169,7 @@ for j in range(DOF_E_SQ):
         c = str(int(k/DOF_E))
         d = str(int(k%DOF_E))
 
-        if CandM_BOOL == True:
-            t, Ureal, Uimag = np.hsplit(
-                np.loadtxt("Output/U_Output/U_%s%s%s%s_TT-TFD_"%(a,b,c,d) 
-                + "%s_steps_makri_model%s.dat"%(TIME_STEPS, MODEL_NUM)), 3)
-        else:
-            t, Ureal, Uimag = np.hsplit(
+        t, Ureal, Uimag = np.hsplit(
                 np.loadtxt("Output/U_Output/U_%s%s%s%s_TT-TFD_"%(a,b,c,d) 
                 + "%s_steps_model%s.dat"%(TIME_STEPS, MODEL_NUM)), 3)
 
@@ -198,12 +182,8 @@ DT = float(time[1]) # time step
 FINAL_TIME = float(time[len(time) - 1]) # final time
 
 # setting parameter string
-if TIME_STEPS == 3400 or TIME_STEPS == 10200:
-    PARAM_STR = "_Ohmic_TT-TFD_b%sG%s_e%s_t%.8f_"%(BETA, GAMMA_DA, EPSILON, DT)
-    PARAM_STR += "xi%swc%s_wmax%s_dofn60_tf%.3f"%(XI, OMEGA_C, OMEGA_MAX, FINAL_TIME)
-else:
-    PARAM_STR = "_Ohmic_TT-TFD_b5G1_e%s_t%.8f_"%(EPSILON, DT)
-    PARAM_STR += "xi%swc%s_wmax%s_dofn60_tf%.4f"%(XI, OMEGA_C, OMEGA_MAX, FINAL_TIME)
+PARAM_STR = "_Ohmic_TT-TFD_b5G1_e%s_t%.8f_"%(EPSILON, DT)
+PARAM_STR += "xi%swc%s_wmax%s_dofn60_tf%.4f"%(XI, OMEGA_C, OMEGA_MAX, FINAL_TIME)
 
 print("             DT =", DT)
 print("     final time =", FINAL_TIME)
@@ -212,7 +192,7 @@ print("   param string =", PARAM_STR)
 # Function to Print ${\cal F}(\tau)$ and $\dot{\cal F}(\tau)$
 def printFFdot(abcdStr, timeFFdot, Freal, Fimag, Fdotreal, Fdotimag):
     # outfileStr for F
-    outfileFStr = "ProjFree_Output/F_"
+    outfileFStr = "Output/ProjFree_Output/F_"
     outfileFStr += abcdStr + PARAM_STR + ".dat"
     
     f = open(outfileFStr, "w")
@@ -222,7 +202,7 @@ def printFFdot(abcdStr, timeFFdot, Freal, Fimag, Fdotreal, Fdotimag):
     f.close()
     
     # outfileStr for Fdot
-    outfileFdotStr = "ProjFree_Output/Fdot_"
+    outfileFdotStr = "Output/ProjFree_Output/Fdot_"
     outfileFdotStr += abcdStr + PARAM_STR + ".dat"
                 
     f = open(outfileFdotStr, "w")

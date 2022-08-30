@@ -22,7 +22,7 @@ using namespace std;
 
 void Print_sigma(string& idStr_K, vector<string>& states, int& numStates,
                  Complex_Matrix& sigma, double& memTime){
-    int i,j,k, errNum, stepSizeIncrement;
+    int i,j,k;
     string outputStr;
     string printStr("");
     
@@ -31,7 +31,7 @@ void Print_sigma(string& idStr_K, vector<string>& states, int& numStates,
     
     outputStr = BATH_TYPE + "_RK4_" + printStr + ".dat";
     
-    Print_mainSigma(states, numStates, outputStr, stepSizeIncrement, sigma);
+    Print_mainSigma(states, numStates, outputStr, sigma);
     
     return;
 }
@@ -65,7 +65,6 @@ void Print_mainSigma(vector<string>& states, int& numStates, string& outputStr,
         }
         for (i = 0 ; i < FINAL_TIMESTEPS; i++) {
             double ti = DT * i;
-            AdjustTimePrinted(ti);
             outfile << ti << "\t" << sigma[i][l].real() << "\t";
             outfile << sigma[i][l].imag() << endl;
         }

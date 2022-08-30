@@ -38,7 +38,6 @@ void MemtimeCheckAlgorithm(string& idStr_K, vector<string>& states,
         }
         
         double memTime_print = memTime;
-        AdjustTimePrinted(memTime_print);
         cout << "   >>> Starting propagation, memTime = " << memTime_print;
         cout << endl;
         for (l = 0; l < (FINAL_TIMESTEPS - 1); l++){

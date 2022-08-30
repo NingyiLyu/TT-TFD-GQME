@@ -11,7 +11,7 @@ import tt.ksl
 import matplotlib.pyplot as plt
 import os
 qmodes=60            #number of quantum bath modes
-nsc = 10200             # number of propagation steps
+nsc = 10             # number of propagation steps
 tau = 0.00150082999505279              # propagation time step
 eps = 1e-14            # tt approx error
 rma = 2000000                # max tt rank
@@ -40,7 +40,7 @@ gk=np.zeros((qmodes))   #ck in occupation number representation
 thetak=np.zeros((qmodes)) #temperature-dependent mixing parameter in TFD
 sinhthetak=np.zeros((qmodes)) #sinh(theta)
 coshthetak=np.zeros((qmodes)) #cosh(theta)
-for i in range(qmodes):                   
+for i in range(qmodes):
     freq[i]=-wc*np.log(1-(i+1)*om/(wc)) # Ohmic frequency
     ck[i]=np.sqrt(kondo*om)*freq[i] #Ohmic coupling constant
     gk[i]=-ck[i]/np.sqrt(2*freq[i]) #Transfer ck to occ. num. representation
@@ -50,7 +50,7 @@ for i in range(qmodes):
 eelec=1.0*au #electronic state energy, in a.u.
 coupling=1.0*au #electronic interstate coupling, in a.u.
 #Build initial ground state
-su=np.array([1,0]) 
+su=np.array([1,0])
 sd=np.array([0,1])
 e1=np.sqrt(0.5)*(su+sd)
 e2=np.sqrt(0.5)*(su+EYE*sd)
@@ -70,7 +70,7 @@ for k in range(2*qmodes):#double space formation
 px=np.array([[0,1],[1,0]])
 pz=np.array([[1,0],[0,-1]])
 #Build electronic site energy matrix
-He=eelec*pz-coupling*px
+He=eelec*pz+coupling*px
 #TT-ize that energy matrix
 tt_He=tt.matrix(He)
 tt_He=tt.kron(tt_He,tt.eye(occ,qmodes*2))
@@ -130,7 +130,7 @@ tt_tildeenergy=tt.kron(tt_tildeenergy,tt_tilenergy)
 #Note that ficticious Harmonic oscillators carry negative sign
 H=tt_He+tt_systemnumoc-tt_tildenumoc+tt_systemenergy+tt_tildeenergy
 H=H.round(eps)
-#Construct propagation operator, d/dt psi(t0)=A psi(t0) 
+#Construct propagation operator, d/dt psi(t0)=A psi(t0)
 A=-EYE*H
 y0=tt_psi0 #Initialize wavefunction
 #Heaviside functions, for selecting electronic states from overall wavefunction
@@ -141,7 +141,7 @@ t=np.arange(0,nsc*tau,tau)
 t=t#*au2ps
 #Add noise, for higher rank KSL propagation
 radd = 19
-#radd = np.array([1,9,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,9,1]) 
+#radd = np.array([1,9,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,9,1])
 radd=np.array([1,2])
 radd=np.append(radd,np.repeat(2,qmodes*2-3))
 radd=np.append(radd,np.array([2,1]))
@@ -185,35 +185,35 @@ for ii in range(nsc):
     expec_Hu=tt.dot(tt_heavu*y0,tt.matvec(H,tt_heavu*y0))
 
 
-#Plot population difference    
+#Plot population difference
 #plt.figure(dpi=600)
-#plt.xlim(0.,1.)    
-#plt.ylim(-1.,1.)             
+#plt.xlim(0.,1.)
+#plt.ylim(-1.,1.)
 #plt.xlabel('time(ps)')
 #plt.ylabel('Populations')
 #plt.plot(t,psu-psd,label='Model 1, sigma_z')
-#plt.legend()                     
+#plt.legend()
 np.save('t.npy',t)
-docs_dir=os.path.expanduser('~/Output/TT-TFD_Output/')
-if tt_flag==tt_su:    
+docs_dir=os.path.expanduser('./Output/TT-TFD_Output/')
+if tt_flag==tt_su:
     np.save(os.path.join(docs_dir,'psu_initsu.npy'),psu)
     np.save(os.path.join(docs_dir,'psd_initsu.npy'),psd)
     np.save(os.path.join(docs_dir,'coh12_initsu.npy'),coh12)
     np.save(os.path.join(docs_dir,'coh21_initsu.npy'),coh21)
 
-elif tt_flag==tt_sd:    
+elif tt_flag==tt_sd:
     np.save(os.path.join(docs_dir,'psu_initsd.npy'),psu)
     np.save(os.path.join(docs_dir,'psd_initsd.npy'),psd)
     np.save(os.path.join(docs_dir,'coh12_initsd.npy'),coh12)
-    np.save(os.path.join(docs_dir,'coh21_initsd.npy'),coh21)   
+    np.save(os.path.join(docs_dir,'coh21_initsd.npy'),coh21)
 
-elif tt_flag==tt_e1:    
+elif tt_flag==tt_e1:
     np.save(os.path.join(docs_dir,'psu_inite1.npy'),psu)
     np.save(os.path.join(docs_dir,'psd_inite1.npy'),psd)
     np.save(os.path.join(docs_dir,'coh12_inite1.npy'),coh12)
-    np.save(os.path.join(docs_dir,'coh21_inite1.npy'),coh21) 
+    np.save(os.path.join(docs_dir,'coh21_inite1.npy'),coh21)
     
-elif tt_flag==tt_e2:    
+elif tt_flag==tt_e2:
     np.save(os.path.join(docs_dir,'psu_inite2.npy'),psu)
     np.save(os.path.join(docs_dir,'psd_inite2.npy'),psd)
     np.save(os.path.join(docs_dir,'coh12_inite2.npy'),coh12)

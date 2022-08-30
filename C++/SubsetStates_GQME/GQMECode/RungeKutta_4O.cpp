@@ -106,7 +106,6 @@ void RungeKutta_4O(string& idStr_K, string& idStr_I, vector<string>& states,
     
         memTime = MEM_TIME;
         double memTime_print = memTime;
-        AdjustTimePrinted(memTime_print);
         cout << "   >>> Starting propagation, memTime = " << memTime_print;
         cout << endl;
         for (l = 0; l < (FINAL_TIMESTEPS - 1); l++){

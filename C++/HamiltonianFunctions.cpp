@@ -87,17 +87,17 @@ int CreateIDString(stringstream& ss, string type, string& idStr){
     
     ss << "b" << BETA;
     ss << "G" << GAMMA_DA << "_e" << EPSILON;
-    ss << "_t" << dt;
+    ss << "_t" << setprecision(8) << dt;
     ss << "_xi" << XI << "wc" << OMEGA_C << "_wmax" << OMEGA_MAX;
     ss << "_dofn" << DOF_N;
     if (type == "PFI"){
-        ss << "_tf" << LEN_TRAJ_PFI * dt;
+        ss << "_tf" << setprecision(3) << (LEN_TRAJ_PFI - 1) * dt;
     }
     else if (type == "K"){
-        ss << "_tf" << LEN_TRAJ_K * dt;
+        ss << "_tf" << setprecision(3) << (LEN_TRAJ_K - 1) * dt;
     }
     else if (type == "I"){
-        ss << "_tf" << LEN_TRAJ_I * dt;
+        ss << "_tf" << setprecision(3) << (LEN_TRAJ_I - 1) * dt;
     }
     else {
         cout << "\tERROR: type not PFI, K, or I in CreateIDString. Exit.";
@@ -120,9 +120,10 @@ int CreateIDString_PFI(string& idStr){
     ss.str("");
     ss << "b" << BETA;
     ss << "G" << GAMMA_DA << "_e" << EPSILON;
-    ss << "_t" << dt;
+    ss << "_t" << setprecision(8) << dt;
     ss << "_xi" << XI << "wc" << OMEGA_C << "_wmax" << OMEGA_MAX;
-    ss << "_dofn" << DOF_N << "_traj" << N_TRAJ << "_tf" << LEN_TRAJ_PFI * dt;
+    ss << "_dofn" << DOF_N;
+    ss << "_tf" << setprecision(3) << (LEN_TRAJ_PFI - 1) * dt;
     idStr += ss.str();
     ss.str("");
     ss.clear();

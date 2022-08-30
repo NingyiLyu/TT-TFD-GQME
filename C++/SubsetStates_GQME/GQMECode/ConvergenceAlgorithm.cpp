@@ -42,7 +42,6 @@ void ConvergenceAlgorithm(vector<string>& states, int& numStates,
     
     memTime = MEM_TIME;
     memTime_print = memTime;
-    AdjustTimePrinted(memTime_print);
     cout << "   >>> Starting propagation, memTime = " << memTime_print << endl;
     
     for (l = 0; l < (FINAL_TIMESTEPS - 1); l++){
@@ -74,7 +73,6 @@ void ConvergenceAlgorithm(vector<string>& states, int& numStates,
         }
         
         memTime_print = memTime;
-        AdjustTimePrinted(memTime_print);
         cout << "   >>> Starting propagation, memTime = " << memTime_print;
         cout << endl;
         for (l = 0; l < (FINAL_TIMESTEPS - 1); l++){

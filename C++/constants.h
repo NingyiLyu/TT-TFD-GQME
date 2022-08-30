@@ -15,7 +15,7 @@ using namespace std;
 // ----------------------------
 // ----- System constants -----
 // ----------------------------
-const int LEN_TRAJ_PFI = 10200; // steps in on trajectory for PFIs
+const int LEN_TRAJ_PFI = 10; // steps in on trajectory for PFIs
 const int LEN_TRAJ_K = LEN_TRAJ_PFI; // steps in on trajectory for K
 const int LEN_TRAJ_I = LEN_TRAJ_K; // steps in on trajectory for I
 const double EPSILON = 1; // half of energy splitting

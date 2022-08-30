@@ -1,13 +1,11 @@
 CXX      := g++
 CXXFLAGS := -std=c++11
 number = 1
-system = Spin-Boson
-gqmeType = Single_00
-
+gqmeType = Single_11
 objects = main_GQME.o PrintFunctions.o ReadInKernel.o ReadInInhomogeneousTerm.o RungeKutta_4O.o ConvergenceAlgorithm.o MemtimeCheckAlgorithm.o PropagateRK4.o 
 
-$(system)_$(gqmeType)_main_GQME$(number).exe: $(objects) NuclearModeFunctions.o HamiltonianFunctions.o
-	g++ $(objects) NuclearModeFunctions.o HamiltonianFunctions.o -o $(system)_$(gqmeType)_main_GQME$(number).exe -std=c++11
+$(gqmeType)_main_GQME$(number).exe: $(objects) NuclearModeFunctions.o HamiltonianFunctions.o
+	g++ $(objects) NuclearModeFunctions.o HamiltonianFunctions.o -o $(gqmeType)_main_GQME$(number).exe -std=c++11
 
 $(objects): FunctionTemplates_GQME.h ../../constants.h ../../gen_constants.h
 
