@@ -59,167 +59,13 @@ print("             xi =", XI)
 print("        omega_c =", OMEGA_C)
 print("      omega_max =", OMEGA_MAX)
 
-############################
-### Functions for Graphs ###
-############################
-
-## 4x4 Graph for ${\cal U}(\tau)$, ${\cal F}(\tau)$, or $\dot{\cal F}(\tau)$
-def graph4x4(real_imag, modelNum, methods, numCols, legendPos_x, legendPos_y, 
-             quantityStr, graphTitleStr, graphStr, timeDict, quantityDict):
-    linestyles = ["-", "--", "-.", ":", ":", ":", "-.", ":"]
-    colors = ['b', 'r', 'm', 'g', 'c', 'y']
-    linewidths = [2,2,2,2,3,3]
-
-    fig = plt.figure(figsize = (18,10.5))
-
-    # creates the 4x4 graphs
-    ax = [] 
-    for i in range(0,4):
-        for j in range(0,4):
-            ax.append(plt.subplot2grid((4, 4), (i, j)))
-
-    # sets the spacing between plots
-    plt.subplots_adjust(wspace = 0.85, hspace = 0)
-  
-    for k in range(0, methods):
-        # pulling the time and quantity from the dictionaries 
-        time = timeDict[graphStr[k]]
-        quantity = quantityDict[graphStr[k]]
-
-        # look at real or imag part depending on real_imag input
-        if real_imag == "Real":
-            quantity = quantity.real
-        elif real_imag == "Imag":
-            quantity = quantity.imag
-        else:
-            print("ERROR: real_imag value not Real or Imag")
-            break
-
-        # making sure the time values cut off at the limit of the quantity
-        # so that their lengths match for the plot
-        rangeLimit = len(quantity[:,0,0])  
-
-        # loops to plot graphs
-        for j in range(0, 4):
-            # ab indices of quantity_{abcd}
-            l = str(int(j/DOF_E)) + str(int(j%DOF_E)) 
-
-            # plotting the quantity
-            ax[0 + j*4].plot(time[0:rangeLimit], quantity[:,j,0], 
-                             color = colors[k], linewidth=linewidths[k], 
-                             linestyle=linestyles[k], label = r'%s'%graphStr[k])
-            ax[1 + j*4].plot(time[0:rangeLimit], quantity[:,j,1], 
-                             color = colors[k], linewidth=linewidths[k], 
-                             linestyle=linestyles[k])
-            ax[2 + j*4].plot(time[0:rangeLimit], quantity[:,j,2], 
-                             color = colors[k], linewidth=linewidths[k], 
-                             linestyle=linestyles[k])
-            ax[3 + j*4].plot(time[0:rangeLimit], quantity[:,j,3], 
-                             color = colors[k], linewidth=linewidths[k], 
-                             linestyle=linestyles[k])
-            
-            # top 3 rows of graphs
-            if j < 3: 
-                # since the graphs share x-axes, we need to turn off the ticks 
-                # for the upper three graphs in each column
-                ax[0 + j*4].set(xticks=[])
-                ax[1 + j*4].set(xticks=[])
-                ax[2 + j*4].set(xticks=[])
-                ax[3 + j*4].set(xticks=[])
-
-                # makes the y tick values larger
-                ax[0 + j*4].tick_params(axis='y', labelsize=16)
-                ax[1 + j*4].tick_params(axis='y', labelsize=16)
-                ax[2 + j*4].tick_params(axis='y', labelsize=16)
-                ax[3 + j*4].tick_params(axis='y', labelsize=16)
-
-                # controls the number of y ticks
-                ax[0 + j*4].yaxis.set_major_locator(MaxNLocator(nbins=5, prune='lower'))
-                ax[1 + j*4].yaxis.set_major_locator(MaxNLocator(nbins=5, prune='lower'))
-                ax[2 + j*4].yaxis.set_major_locator(MaxNLocator(nbins=5, prune='lower'))
-                ax[3 + j*4].yaxis.set_major_locator(MaxNLocator(nbins=5, prune='lower'))
-                
-            # bottom row of graphs
-            else: 
-                # makes both tick values larger 
-                ax[0 + j*4].tick_params(axis='both', labelsize=16)
-                ax[1 + j*4].tick_params(axis='both', labelsize=16)
-                ax[2 + j*4].tick_params(axis='both', labelsize=16)
-                ax[3 + j*4].tick_params(axis='both', labelsize=16)
-
-                # controls the number of ticks
-                ax[0 + j*4].yaxis.set_major_locator(MaxNLocator(nbins=5))
-                ax[1 + j*4].yaxis.set_major_locator(MaxNLocator(nbins=5))
-                ax[2 + j*4].yaxis.set_major_locator(MaxNLocator(nbins=5))
-                ax[3 + j*4].yaxis.set_major_locator(MaxNLocator(nbins=5))
-                ax[0 + j*4].xaxis.set_major_locator(MaxNLocator(nbins=5))
-                ax[1 + j*4].xaxis.set_major_locator(MaxNLocator(nbins=5))
-                ax[2 + j*4].xaxis.set_major_locator(MaxNLocator(nbins=5))
-                ax[3 + j*4].xaxis.set_major_locator(MaxNLocator(nbins=5))
-
-            # y labels for U and F
-            if len(quantityStr) == 1:
-                ax[0 + j*4].set_ylabel(r'${\cal %s}_{%s00}$'%(quantityStr, l),fontsize = 28)
-                ax[1 + j*4].set_ylabel(r'${\cal %s}_{%s01}$'%(quantityStr, l),fontsize = 28)
-                ax[2 + j*4].set_ylabel(r'${\cal %s}_{%s10}$'%(quantityStr, l),fontsize = 28)
-                ax[3 + j*4].set_ylabel(r'${\cal %s}_{%s11}$'%(quantityStr, l),fontsize = 28)
-
-            # y labels for Fdot
-            elif quantityStr == "Fdot": 
-                ax[0 + j*4].set_ylabel(r'$\dot{\cal F}_{%s00}$'%(l),fontsize = 28)
-                ax[1 + j*4].set_ylabel(r'$\dot{\cal F}_{%s01}$'%(l),fontsize = 28)
-                ax[2 + j*4].set_ylabel(r'$\dot{\cal F}_{%s10}$'%(l),fontsize = 28)
-                ax[3 + j*4].set_ylabel(r'$\dot{\cal F}_{%s11}$'%(l),fontsize = 28)
-
-            elif quantityStr[2] == "i":
-                ax[0 + j*4].set_ylabel(r'${\cal %s}^{diff}_{%s00}$'%(quantityStr[0], l),fontsize = 28)
-                ax[1 + j*4].set_ylabel(r'${\cal %s}^{diff}_{%s01}$'%(quantityStr[0], l),fontsize = 28)
-                ax[2 + j*4].set_ylabel(r'${\cal %s}^{diff}_{%s10}$'%(quantityStr[0], l),fontsize = 28)
-                ax[3 + j*4].set_ylabel(r'${\cal %s}^{diff}_{%s11}$'%(quantityStr[0], l),fontsize = 28)
-
-            elif quantityStr[4] == "d":
-                ax[0 + j*4].set_ylabel(r'$\dot{\cal F}^{diff}_{%s00}$'%(l),fontsize = 28)
-                ax[1 + j*4].set_ylabel(r'$\dot{\cal F}^{diff}_{%s01}$'%(l),fontsize = 28)
-                ax[2 + j*4].set_ylabel(r'$\dot{\cal F}^{diff}_{%s10}$'%(l),fontsize = 28)
-                ax[3 + j*4].set_ylabel(r'$\dot{\cal F}^{diff}_{%s11}$'%(l),fontsize = 28)
-                
-
-    # sets x labels on bottom row of graphs
-    ax[12].set_xlabel(r'$\Gamma\tau$',fontsize = 32)
-    ax[13].set_xlabel(r'$\Gamma\tau$',fontsize = 32)
-    ax[14].set_xlabel(r'$\Gamma\tau$',fontsize = 32)
-    ax[15].set_xlabel(r'$\Gamma\tau$',fontsize = 32)
-    
-    # puts a buffer on the left side, as y labels have been cut off before 
-    plt.gcf().subplots_adjust(left=0.15)
-
-    # gets the labels from the first graph
-    handles,labels = ax[0].get_legend_handles_labels()
-    legend = ax[0].legend(handles,labels,loc = 'upper right', 
-                          bbox_to_anchor=(legendPos_x * 4.6, legendPos_y * 1.5), 
-                          fontsize = 20, borderpad=0.2, borderaxespad=0.2, 
-                          ncol = numCols, 
-                          title = "%s, %s"%(real_imag, graphTitleStr))
-    # adjusts title settings 
-    plt.setp(legend.get_title(),fontsize = 20, fontweight='bold')
-
-    # generates a string to differentiate the files
-    outputStr = "_%s_"%(real_imag) + graphTitleStr
-    for k in range(methods):
-        outputStr += "_" + graphStr[k] 
-    
-    # saves the figure
-    plt.savefig("Figures/" + quantityStr + "_Graphs/" + quantityStr 
-                + "_model%s"%(modelNum) + outputStr + ".pdf", dpi=plt.gcf().dpi, 
-                bbox_inches='tight')
-
 ##############################################################
 ### Sections Involving the Calculation of ${\cal U}(\tau)$ ###
 ##############################################################
 
-INIT_NAMES = ["initsu", "initcoh1", "initcoh2", "initsd"]
+INIT_NAMES = ["initsu", "inite1", "inite2", "initsd"]
 INIT_NUMS = ["00", "01sx", "10sy", "11"]
-STATE_NAMES = ["psu", "cohdu", "cohud", "psd"]
+STATE_NAMES = ["psu", "coh12", "coh21", "psd"]
 STATE_NUMS = ["00", "01", "10", "11"]
 FILE_PREFIX = "%s_steps_"%TIME_STEPS
 
@@ -307,7 +153,7 @@ for j in range(DOF_E_SQ):
         d = str(int(k%DOF_E))
 
         # outfile for the U
-        outfileStr = "U_Output/U_" + a + b + c + d + "_TT-TFD_"
+        outfileStr = "Output/U_Output/U_" + a + b + c + d + "_TT-TFD_"
         outfileStr += FILE_PREFIX + "model%s"%MODEL_NUM  + ".dat"
         #print("\t   ", outfileStr)
         f = open(outfileStr, "w")
@@ -315,47 +161,6 @@ for j in range(DOF_E_SQ):
         for i in range(TIME_STEPS):
             f.write("%s\t%s\t%s\n"%(time[i], U[i][j][k].real, U[i][j][k].imag))
         f.close()
-
-# Graphing ${\cal U}(\tau)$ from Files
-
-MODEL_NUM = 5
-timeStepOptions = [10200]#[2000, 3400, 5100, 10000]
-graphStr = ["10200"]#["2000", "3400", "5100", "10000"]
-methods = 1
-numCols = 1
-
-UTimeDict_file = {}
-UDict_file = {}
-
-for timeSteps in timeStepOptions:
-    U_file = np.zeros((timeSteps, DOF_E_SQ, DOF_E_SQ), dtype=np.complex_)
-    time_file = np.zeros((timeSteps))
-    for j in range(DOF_E_SQ):
-        a = int(j/DOF_E)
-        b = int(j%DOF_E)
-        for k in range(DOF_E_SQ):
-            c = int(k/DOF_E)
-            d = int(k%DOF_E)
-
-            t, Ureal, Uimag = np.hsplit(
-                np.loadtxt("U_Output/U_%s%s%s%s_TT-TFD_"%(a,b,c,d) 
-                + "%s_steps_model%s.dat"%(timeSteps, MODEL_NUM)), 3)
-
-            for i in range(timeSteps):
-                time_file[i] = t[i]
-                U_file[i][j][k] = Ureal[i] + 1.j * Uimag[i]
-    
-    UTimeDict_file.update({"%s"%timeSteps : time_file})
-    UDict_file.update({"%s"%timeSteps : U_file})
-
-
-graphTitleStr = "Model %s"%MODEL_NUM#"Chatterjee & Makri"
-legendPos_x = 1#0.75
-legendPos_y = 1.
-graph4x4("Real", MODEL_NUM, methods, numCols, legendPos_x, legendPos_y, "U", 
-         graphTitleStr, graphStr, UTimeDict_file, UDict_file)
-graph4x4("Imag", MODEL_NUM, methods, numCols, legendPos_x, legendPos_y, "U", 
-         graphTitleStr, graphStr, UTimeDict_file, UDict_file)
 
 #############################################################
 ### Calculating ${\cal F}(\tau)$ and $\dot{\cal F}(\tau)$ ###
@@ -377,11 +182,11 @@ for j in range(DOF_E_SQ):
 
         if CandM_BOOL == True:
             t, Ureal, Uimag = np.hsplit(
-                np.loadtxt("U_Output/U_%s%s%s%s_TT-TFD_"%(a,b,c,d) 
+                np.loadtxt("Output/U_Output/U_%s%s%s%s_TT-TFD_"%(a,b,c,d) 
                 + "%s_steps_makri_model%s.dat"%(TIME_STEPS, MODEL_NUM)), 3)
         else:
             t, Ureal, Uimag = np.hsplit(
-                np.loadtxt("U_Output/U_%s%s%s%s_TT-TFD_"%(a,b,c,d) 
+                np.loadtxt("Output/U_Output/U_%s%s%s%s_TT-TFD_"%(a,b,c,d) 
                 + "%s_steps_model%s.dat"%(TIME_STEPS, MODEL_NUM)), 3)
 
         for i in range(TIME_STEPS):
