@@ -10,7 +10,7 @@ mpl.style.use('classic')
 #################
 ### Constants ###
 #################
-TIME_STEPS = 10 # number of time steps
+TIME_STEPS = 10200 # number of time steps
 MODEL_NUM = 1 # model number
 DOF_E = 2 # number of electronic states
 DOF_E_SQ = DOF_E * DOF_E

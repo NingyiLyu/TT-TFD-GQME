@@ -11,7 +11,7 @@ import tt.ksl
 import matplotlib.pyplot as plt
 import os
 qmodes=60            #number of quantum bath modes
-nsc = 10             # number of propagation steps
+nsc = 10200             # number of propagation steps
 tau = 0.00150082999505279              # propagation time step
 eps = 1e-14            # tt approx error
 rma = 2000000                # max tt rank
