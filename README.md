@@ -6,7 +6,7 @@ The code in `SI_TT-TFD.py` generates the TT-TFD projection free inputs for spin-
 
 # Projection-Free Inputs (PFIs)
 
-The projection-free input code in `PFIs_TT-TFD_GQME.py` will calculate the PFIs ${\cal F}(\tau)$ and $\dot{\cal F}(\tau)$ from the output of the TT-TFD code. It will calculate the linear combinations for the ${\cal U}(\tau)$ elements that start in the coherences (i.e., when $c \neq d$ in ${\cal U}_{abcd}(\tau)$ ), so there is no need for a separate code to do that. The code will run based on the model number and number of time steps specified at the beginning of the file and it will take the time step from the output of the TT-TFD code, so make sure those match what you just ran for the TT-TFD code. 
+The projection-free input code in `PFIs_TT-TFD_GQME.py` will calculate the PFIs ${\cal F}(\tau)$ and $\dot{\cal F}(\tau)$ from the output of the TT-TFD code. It will calculate the linear combinations for the ${\cal U}(\tau)$ elements that start in the coherences [i.e., when $c \neq d$ in ${\cal U}_{abcd}(\tau)$ ], so there is no need for a separate code to do that. The code will run based on the model number and number of time steps specified at the beginning of the file and it will take the time step from the output of the TT-TFD code, so make sure those match what you just ran for the TT-TFD code. 
 
 # Memory Kernels, Inhomogeneous Terms, and GQMEs
 
